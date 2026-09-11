@@ -1,0 +1,397 @@
+package sael;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+class SinglyLinkedListNode {
+    public int data;
+    public SinglyLinkedListNode next;
+
+    public SinglyLinkedListNode(int nodeData) {
+        this.data = nodeData;
+        this.next = null;
+    }
+}
+
+class SinglyLinkedList {
+    public SinglyLinkedListNode head;
+    public SinglyLinkedListNode tail;
+
+    public SinglyLinkedList() {
+        this.head = null;
+        this.tail = null;
+    }
+
+    public void insertNode(int nodeData) {
+        SinglyLinkedListNode node = new SinglyLinkedListNode(nodeData);
+
+        if (this.head == null) {
+            this.head = node;
+        } else {
+            this.tail.next = node;
+        }
+
+        this.tail = node;
+    }
+
+    public void clear() {
+        this.head = null;
+        this.tail = null;
+    }
+}
+
+class Result {
+
+    public static SinglyLinkedListNode reverse(SinglyLinkedListNode llist) {
+
+        SinglyLinkedListNode previous = null;
+        SinglyLinkedListNode current = llist;
+
+        while (current != null) {
+
+            SinglyLinkedListNode next = current.next;
+
+            current.next = previous;
+
+            previous = current;
+            current = next;
+        }
+
+        return previous;
+    }
+
+    public static String listToString(SinglyLinkedListNode node) {
+
+        StringBuilder result = new StringBuilder();
+
+        while (node != null) {
+
+            result.append(node.data);
+
+            if (node.next != null) {
+                result.append(" -> ");
+            }
+
+            node = node.next;
+        }
+
+        return result.toString();
+    }
+}
+
+public class Reverse_Linked_List extends JFrame {
+
+    private JTextField inputField;
+    private JTextArea originalArea;
+    private JTextArea reversedArea;
+
+    private SinglyLinkedList llist;
+
+    public Reverse_Linked_List() {
+
+        llist = new SinglyLinkedList();
+
+        setTitle("Reverse Linked List");
+        setSize(700, 500);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+
+        createGUI();
+    }
+
+    private void createGUI() {
+
+        JPanel mainPanel = new JPanel(new BorderLayout(15, 15));
+        mainPanel.setBorder(
+                BorderFactory.createEmptyBorder(20, 20, 20, 20)
+        );
+
+        // TITLE
+        JLabel title = new JLabel(
+                "SINGLY LINKED LIST",
+                SwingConstants.CENTER
+        );
+
+        title.setFont(new Font("Arial", Font.BOLD, 28));
+        title.setForeground(new Color(30, 70, 130));
+
+        mainPanel.add(title, BorderLayout.NORTH);
+
+        // INPUT
+        JPanel inputPanel = new JPanel(
+                new GridLayout(2, 1, 5, 5)
+        );
+
+        JLabel instruction = new JLabel(
+                "Enter a number:"
+        );
+
+        instruction.setFont(
+                new Font("Arial", Font.BOLD, 16)
+        );
+
+        inputField = new JTextField();
+
+        inputField.setFont(
+                new Font("Arial", Font.PLAIN, 18)
+        );
+
+        inputPanel.add(instruction);
+        inputPanel.add(inputField);
+
+        // BUTTONS
+        JButton addButton = new JButton("Add Node");
+        JButton reverseButton = new JButton("Reverse");
+        JButton clearButton = new JButton("Clear");
+
+        addButton.setFont(
+                new Font("Arial", Font.BOLD, 15)
+        );
+
+        reverseButton.setFont(
+                new Font("Arial", Font.BOLD, 15)
+        );
+
+        clearButton.setFont(
+                new Font("Arial", Font.BOLD, 15)
+        );
+
+        addButton.setBackground(new Color(60, 120, 200));
+        addButton.setForeground(Color.WHITE);
+
+        reverseButton.setBackground(new Color(50, 150, 80));
+        reverseButton.setForeground(Color.WHITE);
+
+        clearButton.setBackground(new Color(200, 70, 70));
+        clearButton.setForeground(Color.WHITE);
+
+        JPanel buttonPanel = new JPanel();
+
+        buttonPanel.add(addButton);
+        buttonPanel.add(reverseButton);
+        buttonPanel.add(clearButton);
+
+        // ORIGINAL LIST
+        originalArea = new JTextArea();
+        originalArea.setEditable(false);
+        originalArea.setFont(
+                new Font("Monospaced", Font.BOLD, 18)
+        );
+
+        JLabel originalLabel = new JLabel(
+                "Original Linked List:"
+        );
+
+        originalLabel.setFont(
+                new Font("Arial", Font.BOLD, 16)
+        );
+
+        JPanel originalPanel = new JPanel(
+                new BorderLayout(5, 5)
+        );
+
+        originalPanel.add(
+                originalLabel,
+                BorderLayout.NORTH
+        );
+
+        originalPanel.add(
+                new JScrollPane(originalArea),
+                BorderLayout.CENTER
+        );
+
+        // REVERSED LIST
+        reversedArea = new JTextArea();
+        reversedArea.setEditable(false);
+        reversedArea.setFont(
+                new Font("Monospaced", Font.BOLD, 18)
+        );
+
+        JLabel reversedLabel = new JLabel(
+                "Reversed Linked List:"
+        );
+
+        reversedLabel.setFont(
+                new Font("Arial", Font.BOLD, 16)
+        );
+
+        JPanel reversedPanel = new JPanel(
+                new BorderLayout(5, 5)
+        );
+
+        reversedPanel.add(
+                reversedLabel,
+                BorderLayout.NORTH
+        );
+
+        reversedPanel.add(
+                new JScrollPane(reversedArea),
+                BorderLayout.CENTER
+        );
+
+        // OUTPUT
+        JPanel outputPanel = new JPanel(
+                new GridLayout(2, 1, 10, 10)
+        );
+
+        outputPanel.add(originalPanel);
+        outputPanel.add(reversedPanel);
+
+        // CENTER
+        JPanel centerPanel = new JPanel(
+                new BorderLayout(10, 10)
+        );
+
+        centerPanel.add(
+                inputPanel,
+                BorderLayout.NORTH
+        );
+
+        centerPanel.add(
+                outputPanel,
+                BorderLayout.CENTER
+        );
+
+        centerPanel.add(
+                buttonPanel,
+                BorderLayout.SOUTH
+        );
+
+        mainPanel.add(
+                centerPanel,
+                BorderLayout.CENTER
+        );
+
+        // ADD NODE
+        addButton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                addNode();
+            }
+        });
+
+        // REVERSE
+        reverseButton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                reverseList();
+            }
+        });
+
+        // CLEAR
+        clearButton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                clearAll();
+            }
+        });
+
+        // ENTER KEY
+        inputField.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                addNode();
+            }
+        });
+
+        add(mainPanel);
+    }
+
+    private void addNode() {
+
+        String input = inputField.getText().trim();
+
+        if (input.isEmpty()) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Please enter a number.",
+                    "Input Error",
+                    JOptionPane.WARNING_MESSAGE
+            );
+
+            return;
+        }
+
+        try {
+
+            int number = Integer.parseInt(input);
+
+            llist.insertNode(number);
+
+            originalArea.setText(
+                    Result.listToString(llist.head)
+            );
+
+            reversedArea.setText("");
+
+            inputField.setText("");
+            inputField.requestFocus();
+
+        } catch (NumberFormatException ex) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Please enter a valid integer.",
+                    "Invalid Input",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        }
+    }
+
+    private void reverseList() {
+
+        if (llist.head == null) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "The linked list is empty.",
+                    "Warning",
+                    JOptionPane.WARNING_MESSAGE
+            );
+
+            return;
+        }
+
+        llist.head = Result.reverse(llist.head);
+
+        reversedArea.setText(
+                Result.listToString(llist.head)
+        );
+    }
+
+    private void clearAll() {
+
+        llist.clear();
+
+        inputField.setText("");
+        originalArea.setText("");
+        reversedArea.setText("");
+
+        inputField.requestFocus();
+    }
+
+    public static void main(String[] args) {
+
+        SwingUtilities.invokeLater(new Runnable() {
+
+            @Override
+            public void run() {
+
+                Reverse_Linked_List gui =
+                        new Reverse_Linked_List();
+
+                gui.setVisible(true);
+            }
+        });
+    }
+}
